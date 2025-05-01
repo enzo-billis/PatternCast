@@ -1,8 +1,10 @@
 import PDFViewer from "@/components/PDFViewer";
+import { Button, ButtonText } from "@/components/ui/button";
 import { Center } from "@/components/ui/center";
+import { Image } from "@/components/ui/image";
+import { VStack } from "@/components/ui/vstack";
 import * as DocumentPicker from "expo-document-picker";
 import { useState } from "react";
-import { Button } from "react-native";
 
 export default function HomeScreen() {
   const [selectedDocuments, setSelectedDocuments] =
@@ -27,7 +29,16 @@ export default function HomeScreen() {
   return (
     <Center style={{ height: "100%" }}>
       {!selectedDocuments && (
-        <Button onPress={() => pickDocuments()} title="Pick document" />
+        <VStack style={{ alignItems: "center" }} space="lg">
+          <Image
+            size="lg"
+            source={require("../assets/images/icon.png")}
+            alt="image"
+          />
+          <Button onPress={() => pickDocuments()}>
+            <ButtonText>Choisir un patron</ButtonText>
+          </Button>
+        </VStack>
       )}
       {!!selectedDocuments && <PDFViewer document={selectedDocuments} />}
     </Center>

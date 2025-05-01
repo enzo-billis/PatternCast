@@ -75,7 +75,6 @@ const PDFViewer = ({ document }: PropTypes) => {
   }
 
   const autoZoom = async () => {
-    console.log(originalSize, size1, size2, scale1, scale2);
     const calculcatedScale =
       scale1 +
       ((parseFloat(originalSize.replace(",", ".")) -
@@ -83,12 +82,10 @@ const PDFViewer = ({ document }: PropTypes) => {
         (scale2 - scale1)) /
         (parseFloat(size2.replace(",", ".")) -
           parseFloat(size1.replace(",", ".")));
-    console.log();
     setScale(calculcatedScale);
     setScaleMeasure(calculcatedScale);
   };
 
-  console.log("scale", scale);
   return (
     <Box style={{ height: "100%", width: "100%" }}>
       <View
@@ -106,13 +103,13 @@ const PDFViewer = ({ document }: PropTypes) => {
           <HStack style={styles.toolbar} space="md">
             {!scaleMeasureMode && (
               <>
-                <Button onPress={() => setScale(scale + 1)}>
+                <Button onPress={() => setScale(scale + 0.5)}>
                   <Icon
                     as={ZoomIn}
                     className="text-typography-500 m-2 w-4 h-4"
                   />
                 </Button>
-                <Button onPress={() => setScale(scale - 1)}>
+                <Button onPress={() => setScale(scale - 0.5)}>
                   <Icon
                     as={ZoomOut}
                     className="text-typography-500 m-2 w-4 h-4"
@@ -169,7 +166,7 @@ const PDFViewer = ({ document }: PropTypes) => {
                       onPress={() => {
                         setScale1(scale);
                         setScaleMeasureModeStep(2);
-                        setScale(10);
+                        setScale(3);
                       }}
                     >
                       <ButtonText>Save</ButtonText>

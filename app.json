@@ -1,25 +1,28 @@
 {
   "expo": {
     "jsEngine": "hermes",
-    "name": "PatternProjector",
+    "name": "PatternCast",
     "slug": "PatternProjector",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "buildNumber": "1",
+      "icon": "./assets/images/icon.png",
       "supportsTablet": true,
-      "bundleIdentifier": "com.enzobillis.patternProjector",
+      "bundleIdentifier": "com.enzobillis.patternCast",
       "appleTeamId": "N4PB64R6SZ"
     },
     "android": {
+      "versionCode": "2",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.enzobillis.patternProjector"
+      "package": "com.enzobillis.patternCast"
     },
     "web": {
       "bundler": "metro",
@@ -52,6 +55,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d47d39a3-2517-4bb3-b55c-3c748ad9601e"
+      }
+    },
+    "owner": "enzobillis"
   }
 }

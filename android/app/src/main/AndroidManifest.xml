@@ -25,8 +25,8 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
-        <data android:scheme="com.enzobillis.patternProjector"/>
-        <data android:scheme="exp+patternprojector"/>
+        <data android:scheme="com.enzobillis.patternCast"/>
+        <data android:scheme="exp+patterncast"/>
       </intent-filter>
     </activity>
   </application>
