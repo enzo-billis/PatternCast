@@ -1,6 +1,7 @@
 import * as DocumentPicker from "expo-document-picker";
 import * as ScreenOrientation from "expo-screen-orientation";
 import {
+  LogOut,
   RotateCcw,
   RulerDimensionLine,
   ZoomIn,
@@ -12,17 +13,19 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import Pdf from "react-native-pdf";
 import Layers from "./Layers";
 import { Box } from "./ui/box";
-import { Button, ButtonText } from "./ui/button";
+import { Button, ButtonIcon, ButtonText } from "./ui/button";
 import { HStack } from "./ui/hstack";
-import { Icon } from "./ui/icon";
+import { Icon, ThreeDotsIcon } from "./ui/icon";
 import { Input, InputField } from "./ui/input";
+import { Menu, MenuItem, MenuItemLabel } from "./ui/menu";
 import { Text } from "./ui/text";
 
 type PropTypes = {
   document: DocumentPicker.DocumentPickerAsset;
+  onLeave: () => void;
 };
 
-const PDFViewer = ({ document }: PropTypes) => {
+const PDFViewer = ({ document, onLeave }: PropTypes) => {
   const [pdfBase64, setPDFBase64] = useState("");
   const [width, setWidth] = useState(Dimensions.get("window").width);
   const [height, setHeight] = useState(Dimensions.get("window").height);
@@ -119,22 +122,48 @@ const PDFViewer = ({ document }: PropTypes) => {
                   />
                 </Button>
 
-                <Button onPress={() => setScale(scaleMeasure || 1)}>
-                  <Icon
-                    as={RotateCcw}
-                    className="text-typography-500 m-2 w-4 h-4"
-                  />
-                </Button>
-                <Button onPress={() => setScaleMeasureMode(true)}>
-                  <Icon
-                    as={RulerDimensionLine}
-                    className="text-typography-500 m-2 w-4 h-4"
-                  />
-                </Button>
                 <Layers
                   base64={pdfBase64}
                   onChangePDF={(e) => setPDFBase64(e)}
                 />
+
+                <Menu
+                  placement="top"
+                  offset={5}
+                  disabledKeys={["Settings"]}
+                  trigger={({ ...triggerProps }) => {
+                    return (
+                      <Button {...triggerProps}>
+                        <ButtonIcon as={ThreeDotsIcon} />
+                      </Button>
+                    );
+                  }}
+                >
+                  <MenuItem
+                    onPress={() => setScale(scaleMeasure || 1)}
+                    key="ReinitialiserZoom"
+                    textValue="Réinitialiser le zoom"
+                  >
+                    <Icon as={RotateCcw} size="sm" className="mr-2" />
+                    <MenuItemLabel size="sm">Réinit. Zoom</MenuItemLabel>
+                  </MenuItem>
+                  <MenuItem
+                    onPress={() => setScaleMeasureMode(true)}
+                    key="ScaleAuto"
+                    textValue="Mise à l'échelle"
+                  >
+                    <Icon as={RulerDimensionLine} size="sm" className="mr-2" />
+                    <MenuItemLabel size="sm">Mise à l'echelle</MenuItemLabel>
+                  </MenuItem>
+                  <MenuItem
+                    onPress={() => onLeave()}
+                    key="Exit"
+                    textValue="Exit"
+                  >
+                    <Icon as={LogOut} size="sm" className="mr-2" />
+                    <MenuItemLabel size="sm">Quitter</MenuItemLabel>
+                  </MenuItem>
+                </Menu>
               </>
             )}
             {!!scaleMeasureMode && (

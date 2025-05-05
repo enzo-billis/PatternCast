@@ -1,36 +1,76 @@
 import PDFViewer from "@/components/PDFViewer";
-import { Button, ButtonText } from "@/components/ui/button";
+import {
+  Button,
+  ButtonGroup,
+  ButtonIcon,
+  ButtonText,
+} from "@/components/ui/button";
 import { Center } from "@/components/ui/center";
 import { Image } from "@/components/ui/image";
+import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as DocumentPicker from "expo-document-picker";
-import { useRouter } from "expo-router";
 import { useShareIntentContext } from "expo-share-intent";
+import { ChevronRightCircle } from "lucide-react-native";
 import { useEffect, useState } from "react";
 
+const CACHE_KEY = "PREVIOUS_DOCUMENTS";
+const MAX_CACHE_SIZE = 5;
+
 export default function HomeScreen() {
-  const router = useRouter();
   const [selectedDocuments, setSelectedDocuments] =
     useState<DocumentPicker.DocumentPickerAsset>();
+  const [previousDocuments, setPreviousDocuments] =
+    useState<DocumentPicker.DocumentPickerAsset[]>();
+
   const { hasShareIntent, shareIntent, error, resetShareIntent } =
     useShareIntentContext();
 
   useEffect(() => {
-    console.log("hasShareIntent", hasShareIntent);
-    console.log("ShareIntentFiles", shareIntent?.files);
     if (
       hasShareIntent &&
       shareIntent?.files &&
       shareIntent?.files[0]?.mimeType === "application/pdf"
     ) {
-      console.log("Before setSelectedDocuments", {
+      setSelectedDocuments({
         uri: shareIntent?.files[0].path,
-        name: "",
+        name: shareIntent?.files[0].fileName,
       });
-      setSelectedDocuments({ uri: shareIntent?.files[0].path, name: "" });
     }
   }, [hasShareIntent]);
-  console.log("selectedDocuments", selectedDocuments);
+
+  useEffect(() => {
+    const refreshCache = async () => {
+      const actualCache = JSON.parse(
+        (await AsyncStorage.getItem(CACHE_KEY)) || "[]"
+      ) as DocumentPicker.DocumentPickerAsset[];
+      setPreviousDocuments(actualCache);
+
+      if (selectedDocuments) {
+        const actualCache = JSON.parse(
+          (await AsyncStorage.getItem(CACHE_KEY)) || "[]"
+        ) as DocumentPicker.DocumentPickerAsset[];
+
+        const existingCacheIndex = actualCache.findIndex(
+          (doc) => doc.name === selectedDocuments.name
+        );
+
+        if (existingCacheIndex !== -1) {
+          actualCache.splice(existingCacheIndex, 1);
+        }
+
+        if (actualCache.length >= MAX_CACHE_SIZE) {
+          actualCache.pop();
+        }
+        await AsyncStorage.setItem(
+          CACHE_KEY,
+          JSON.stringify([selectedDocuments, ...actualCache])
+        );
+      }
+    };
+    refreshCache();
+  }, [selectedDocuments]);
 
   const pickDocuments = async () => {
     try {
@@ -48,21 +88,48 @@ export default function HomeScreen() {
       console.log("Error picking documents:", error);
     }
   };
+
   return (
     <Center style={{ height: "100%" }}>
       {!selectedDocuments && (
-        <VStack style={{ alignItems: "center" }} space="lg">
-          <Image
-            size="lg"
-            source={require("../assets/images/icon.png")}
-            alt="image"
-          />
-          <Button onPress={() => pickDocuments()}>
-            <ButtonText>Choisir un patron</ButtonText>
-          </Button>
+        <VStack style={{ alignItems: "center" }} space="4xl" className="p-5">
+          <VStack style={{ alignItems: "center" }} space="sm">
+            <Image
+              size="2xl"
+              source={require("../assets/images/icon.png")}
+              alt="image"
+            />
+            <Button size="xl" onPress={() => pickDocuments()}>
+              <ButtonText>Choisir un fichier</ButtonText>
+            </Button>
+          </VStack>
+          {previousDocuments?.length && (
+            <VStack space="sm">
+              <Text>Derniers fichiers consultés</Text>
+              <VStack space="md">
+                {previousDocuments?.map((e) => (
+                  <ButtonGroup key={e.uri}>
+                    <Button
+                      onPress={() => setSelectedDocuments(e)}
+                      variant="outline"
+                      style={{ width: "100%", justifyContent: "space-between" }}
+                    >
+                      <ButtonText>{e.name}</ButtonText>
+                      <ButtonIcon as={ChevronRightCircle} />
+                    </Button>
+                  </ButtonGroup>
+                ))}
+              </VStack>
+            </VStack>
+          )}
         </VStack>
       )}
-      {!!selectedDocuments && <PDFViewer document={selectedDocuments} />}
+      {!!selectedDocuments && (
+        <PDFViewer
+          document={selectedDocuments}
+          onLeave={() => setSelectedDocuments(undefined)}
+        />
+      )}
     </Center>
   );
 }
