@@ -11,12 +11,14 @@
     "web": "DARK_MODE=media expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "prebuild:clean": "npx expo prebuild --clean"
+    "prebuild:clean": "npx expo prebuild --clean",
+    "postinstall": "patch-package"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/cli": "^0.24.11",
     "@expo/html-elements": "^0.4.2",
     "@expo/vector-icons": "^14.0.2",
     "@gluestack-ui/button": "^1.0.14",
@@ -46,6 +48,7 @@
     "expo-modules-autolinking": "^2.0.8",
     "expo-router": "~4.0.20",
     "expo-screen-orientation": "~8.0.4",
+    "expo-share-intent": "^4.0.0",
     "expo-splash-screen": "~0.29.24",
     "expo-status-bar": "~2.0.1",
     "expo-symbols": "~0.2.2",

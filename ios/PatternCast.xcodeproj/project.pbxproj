@@ -7,32 +7,55 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		08B71B3FCC306871670DFDC9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 58CC10243A8561C60E4D9153 /* PrivacyInfo.xcprivacy */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		151393269DDA4B0587A31ED8 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B7C2D6579E4A4093FDDE7B /* noop-file.swift */; };
+		33772951F6C545AEBA70AD10 /* ShareExtensionPreprocessor.js in Resources */ = {isa = PBXBuildFile; fileRef = 857D904B5AF64CCBB78B414B /* ShareExtensionPreprocessor.js */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		5BB2B629718B4743AB8F7C18 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355876B9783646308CD330C8 /* noop-file.swift */; };
+		691848D91E2F414EA51E069D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5729F0A245504972BD8CAC6F /* MainInterface.storyboard */; };
 		96905EF65AED1B983A6B3ABC /* libPods-PatternCast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-PatternCast.a */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		D2D9E98C05774B1C8A15C733 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3401794441C34DEEA91953CC /* ShareViewController.swift */; };
+		DFCB9B06AE7C4411A6962C36 /* ShareExtension.appex in Copy Files */ = {isa = PBXBuildFile; fileRef = DC4DFD98A9DF438F8E125CE5 /* ShareExtension.appex */; };
+		E82E78A0988D1CB38C09B85C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0A4498DC26D546EE9662A2DF /* PrivacyInfo.xcprivacy */; };
+		FDBA24CE87924C0F80F1A4CA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0A4498DC26D546EE9662A2DF /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		90BF6C84371D48429CF60A25 /* Copy Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DFCB9B06AE7C4411A6962C36 /* ShareExtension.appex in Copy Files */,
+			);
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		0A4498DC26D546EE9662A2DF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PrivacyInfo.xcprivacy; path = /Users/enzobillis/Projets/PatternProjector/ios/ShareExtension/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* PatternCast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PatternCast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PatternCast/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = PatternCast/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PatternCast/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PatternCast/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PatternCast/main.m; sourceTree = "<group>"; };
-		1D8A4FB0529F4D2BB81C5D52 /* PatternCast-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "PatternCast-Bridging-Header.h"; path = "PatternCast/PatternCast-Bridging-Header.h"; sourceTree = "<group>"; };
-		58CC10243A8561C60E4D9153 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = PatternCast/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3401794441C34DEEA91953CC /* ShareViewController.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = ShareViewController.swift; path = /Users/enzobillis/Projets/PatternProjector/ios/ShareExtension/ShareViewController.swift; sourceTree = "<group>"; };
+		355876B9783646308CD330C8 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "PatternCast/noop-file.swift"; sourceTree = "<group>"; };
+		5729F0A245504972BD8CAC6F /* MainInterface.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = MainInterface.storyboard; path = /Users/enzobillis/Projets/PatternProjector/ios/ShareExtension/MainInterface.storyboard; sourceTree = "<group>"; };
 		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-PatternCast.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatternCast.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C2E3173556A471DD304B334 /* Pods-PatternCast.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatternCast.debug.xcconfig"; path = "Target Support Files/Pods-PatternCast/Pods-PatternCast.debug.xcconfig"; sourceTree = "<group>"; };
-		72B7C2D6579E4A4093FDDE7B /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "PatternCast/noop-file.swift"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-PatternCast.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatternCast.release.xcconfig"; path = "Target Support Files/Pods-PatternCast/Pods-PatternCast.release.xcconfig"; sourceTree = "<group>"; };
+		857D904B5AF64CCBB78B414B /* ShareExtensionPreprocessor.js */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = ShareExtensionPreprocessor.js; path = /Users/enzobillis/Projets/PatternProjector/ios/ShareExtension/ShareExtensionPreprocessor.js; sourceTree = "<group>"; };
+		8C40A1B8BA7542D7AA26BAB3 /* PatternCast-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "PatternCast-Bridging-Header.h"; path = "PatternCast/PatternCast-Bridging-Header.h"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = PatternCast/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		DC4DFD98A9DF438F8E125CE5 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = undefined; name = ShareExtension.appex; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-PatternCast/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -59,9 +82,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				72B7C2D6579E4A4093FDDE7B /* noop-file.swift */,
-				1D8A4FB0529F4D2BB81C5D52 /* PatternCast-Bridging-Header.h */,
-				58CC10243A8561C60E4D9153 /* PrivacyInfo.xcprivacy */,
+				355876B9783646308CD330C8 /* noop-file.swift */,
+				8C40A1B8BA7542D7AA26BAB3 /* PatternCast-Bridging-Header.h */,
 			);
 			name = PatternCast;
 			sourceTree = "<group>";
@@ -101,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* PatternCast.app */,
+				DC4DFD98A9DF438F8E125CE5 /* ShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -147,13 +170,14 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PatternCast" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				D7DD36F958F1629DF975A1F1 /* [Expo] Configure project */,
+				96B02778CA2C1237B3F180B1 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				498566054FEBF4B5D055908B /* [CP] Embed Pods Frameworks */,
+				90BF6C84371D48429CF60A25 /* Copy Files */,
+				5C2222C4B085E6C9E826DE51 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -163,6 +187,22 @@
 			productName = PatternCast;
 			productReference = 13B07F961A680F5B00A75B9A /* PatternCast.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CD5A3687138A4A848F640C4E /* ShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 56C9780951254AE3A2E2D26D /* Build configuration list for PBXNativeTarget "ShareExtension" */;
+			buildPhases = (
+				2D4EB163A9A540F8B7364AD7 /* Sources */,
+				A9E26E7F4E46462EB7C75ABA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShareExtension;
+			productName = ShareExtension;
+			productReference = DC4DFD98A9DF438F8E125CE5 /* ShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -191,6 +231,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* PatternCast */,
+				CD5A3687138A4A848F640C4E /* ShareExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -203,7 +244,17 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				08B71B3FCC306871670DFDC9 /* PrivacyInfo.xcprivacy in Resources */,
+				E82E78A0988D1CB38C09B85C /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9E26E7F4E46462EB7C75ABA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33772951F6C545AEBA70AD10 /* ShareExtensionPreprocessor.js in Resources */,
+				691848D91E2F414EA51E069D /* MainInterface.storyboard in Resources */,
+				FDBA24CE87924C0F80F1A4CA /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,7 +298,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		498566054FEBF4B5D055908B /* [CP] Embed Pods Frameworks */ = {
+		5C2222C4B085E6C9E826DE51 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -307,7 +358,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatternCast/Pods-PatternCast-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D7DD36F958F1629DF975A1F1 /* [Expo] Configure project */ = {
+		96B02778CA2C1237B3F180B1 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -336,7 +387,15 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				151393269DDA4B0587A31ED8 /* noop-file.swift in Sources */,
+				5BB2B629718B4743AB8F7C18 /* noop-file.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D4EB163A9A540F8B7364AD7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2D9E98C05774B1C8A15C733 /* ShareViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,7 +427,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.enzobillis.patternCast;
-				PRODUCT_NAME = PatternCast;
+				PRODUCT_NAME = "PatternCast";
 				SWIFT_OBJC_BRIDGING_HEADER = "PatternCast/PatternCast-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -397,7 +456,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.enzobillis.patternCast;
-				PRODUCT_NAME = PatternCast;
+				PRODUCT_NAME = "PatternCast";
 				SWIFT_OBJC_BRIDGING_HEADER = "PatternCast/PatternCast-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -523,6 +582,54 @@
 			};
 			name = Release;
 		};
+		CCFB1D779C4E4FDF8BAAFED4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = /Users/enzobillis/Projets/PatternProjector/ios/ShareExtension/ShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "/Users/enzobillis/Projets/PatternProjector/ios/ShareExtension/ShareExtension-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0.1;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.enzobillis.patternCast.share-extension";
+				PRODUCT_NAME = ShareExtension;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				DEVELOPMENT_TEAM = N4PB64R6SZ;
+			};
+			name = Debug;
+		};
+		D3703E2DA9D4440FBB876E4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = /Users/enzobillis/Projets/PatternProjector/ios/ShareExtension/ShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "/Users/enzobillis/Projets/PatternProjector/ios/ShareExtension/ShareExtension-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0.1;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.enzobillis.patternCast.share-extension";
+				PRODUCT_NAME = ShareExtension;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				DEVELOPMENT_TEAM = N4PB64R6SZ;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -531,6 +638,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		56C9780951254AE3A2E2D26D /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCFB1D779C4E4FDF8BAAFED4 /* Debug */,
+				D3703E2DA9D4440FBB876E4E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

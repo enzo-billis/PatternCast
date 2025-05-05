@@ -4,11 +4,33 @@ import { Center } from "@/components/ui/center";
 import { Image } from "@/components/ui/image";
 import { VStack } from "@/components/ui/vstack";
 import * as DocumentPicker from "expo-document-picker";
-import { useState } from "react";
+import { useRouter } from "expo-router";
+import { useShareIntentContext } from "expo-share-intent";
+import { useEffect, useState } from "react";
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [selectedDocuments, setSelectedDocuments] =
     useState<DocumentPicker.DocumentPickerAsset>();
+  const { hasShareIntent, shareIntent, error, resetShareIntent } =
+    useShareIntentContext();
+
+  useEffect(() => {
+    console.log("hasShareIntent", hasShareIntent);
+    console.log("ShareIntentFiles", shareIntent?.files);
+    if (
+      hasShareIntent &&
+      shareIntent?.files &&
+      shareIntent?.files[0]?.mimeType === "application/pdf"
+    ) {
+      console.log("Before setSelectedDocuments", {
+        uri: shareIntent?.files[0].path,
+        name: "",
+      });
+      setSelectedDocuments({ uri: shareIntent?.files[0].path, name: "" });
+    }
+  }, [hasShareIntent]);
+  console.log("selectedDocuments", selectedDocuments);
 
   const pickDocuments = async () => {
     try {
