@@ -6,9 +6,11 @@ import {
   ZoomIn,
   ZoomOut,
 } from "lucide-react-native";
+import { PDFDocument } from "pdf-lib";
 import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import Pdf from "react-native-pdf";
+import Layers from "./Layers";
 import { Box } from "./ui/box";
 import { Button, ButtonText } from "./ui/button";
 import { HStack } from "./ui/hstack";
@@ -21,7 +23,7 @@ type PropTypes = {
 };
 
 const PDFViewer = ({ document }: PropTypes) => {
-  const source = { uri: document?.uri, cache: true };
+  const [pdfBase64, setPDFBase64] = useState("");
   const [width, setWidth] = useState(Dimensions.get("window").width);
   const [height, setHeight] = useState(Dimensions.get("window").height);
   const [orientation, setOrientation] =
@@ -39,6 +41,29 @@ const PDFViewer = ({ document }: PropTypes) => {
   const [scale2, setScale2] = useState(0);
   const [size2, setSize2] = useState("");
 
+  const source = {
+    uri: `data:application/pdf;base64,${pdfBase64}`,
+    cache: true,
+  };
+
+  useEffect(() => {
+    const getPDF = async () => {
+      const response = await fetch(document?.uri);
+      const blob = await response.blob();
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = async () => {
+        if (reader.result) {
+          const arrayBuffer = reader.result as string;
+          const pdfDoc = await PDFDocument.load(arrayBuffer);
+          const pdfBytes = await pdfDoc.saveAsBase64();
+          setPDFBase64(pdfBytes);
+        }
+      };
+    };
+    getPDF();
+  }, [document]);
+
   useEffect(() => {
     ScreenOrientation.addOrientationChangeListener((newOrientation) => {
       const { width, height } = Dimensions.get("window");
@@ -51,28 +76,6 @@ const PDFViewer = ({ document }: PropTypes) => {
     };
     getInitialOrientation();
   }, []);
-
-  function calculatePdfScale(
-    screenPPI: number,
-    screenPixelWidth: number,
-    pdfWidthMM: number
-  ): number {
-    const INCH_IN_MM = 25.4;
-
-    // Largeur physique de l'écran en pouces
-    const screenWidthInInches = screenPixelWidth / screenPPI;
-
-    // Largeur physique de l'écran en mm
-    const screenWidthInMM = screenWidthInInches * INCH_IN_MM;
-
-    // Taille du PDF en points (1 point = 1/72 pouce)
-    const pdfWidthInPoints = (pdfWidthMM / INCH_IN_MM) * 72;
-
-    // À combien de pixels réels doit-on afficher chaque point PDF ?
-    const physicalPixelPerPdfPoint = screenPixelWidth / pdfWidthInPoints;
-
-    return physicalPixelPerPdfPoint;
-  }
 
   const autoZoom = async () => {
     const calculcatedScale =
@@ -128,6 +131,10 @@ const PDFViewer = ({ document }: PropTypes) => {
                     className="text-typography-500 m-2 w-4 h-4"
                   />
                 </Button>
+                <Layers
+                  base64={pdfBase64}
+                  onChangePDF={(e) => setPDFBase64(e)}
+                />
               </>
             )}
             {!!scaleMeasureMode && (
@@ -215,6 +222,7 @@ const PDFViewer = ({ document }: PropTypes) => {
             )}
           </HStack>
         )}
+
         <Pdf
           source={source}
           onPageSingleTap={() => {

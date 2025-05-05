@@ -34,7 +34,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>exp+patterncast</string>
+          <string>exp+patternprojector</string>
         </array>
       </dict>
     </array>
