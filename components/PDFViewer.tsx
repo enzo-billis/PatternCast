@@ -92,6 +92,8 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
     setScaleMeasure(calculcatedScale);
   };
 
+  console.log(scale);
+
   return (
     <Box style={{ height: "100%", width: "100%" }}>
       <View
@@ -115,7 +117,7 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
                     className="text-typography-500 m-2 w-4 h-4"
                   />
                 </Button>
-                <Button onPress={() => setScale(scale - 0.5)}>
+                <Button onPress={() => setScale(scale > 1.5 ? scale - 0.5 : 1)}>
                   <Icon
                     as={ZoomOut}
                     className="text-typography-500 m-2 w-4 h-4"
@@ -134,7 +136,10 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
                   trigger={({ ...triggerProps }) => {
                     return (
                       <Button {...triggerProps}>
-                        <ButtonIcon as={ThreeDotsIcon} />
+                        <ButtonIcon
+                          as={ThreeDotsIcon}
+                          className="text-typography-500 m-2 w-4 h-4"
+                        />
                       </Button>
                     );
                   }}
