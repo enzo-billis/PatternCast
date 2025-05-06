@@ -1,3 +1,4 @@
+import Menu from "@/components/Menu";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -51,9 +52,12 @@ export default function RootLayout() {
         >
           <Stack>
             <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="settings" options={{ headerShown: false }} />
+            <Stack.Screen name="account" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
           </Stack>
           <StatusBar style="auto" />
+          <Menu />
         </ThemeProvider>
       </GluestackUIProvider>
     </ShareIntentProvider>

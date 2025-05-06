@@ -92,8 +92,6 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
     setScaleMeasure(calculcatedScale);
   };
 
-  console.log(scale);
-
   return (
     <Box style={{ height: "100%", width: "100%" }}>
       <View

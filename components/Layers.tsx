@@ -130,7 +130,6 @@ const Layers = ({ base64, onChangePDF }: PropTypes) => {
       try {
         return decodeUTF16BE(hex);
       } catch (e) {
-        console.log(e);
         return rawName.toString();
       }
     }
