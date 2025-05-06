@@ -25,7 +25,7 @@ export default function HomeScreen() {
   const [previousDocuments, setPreviousDocuments] =
     useState<DocumentPicker.DocumentPickerAsset[]>();
 
-  const { hasShareIntent, shareIntent, error, resetShareIntent } =
+  const { hasShareIntent, shareIntent, resetShareIntent } =
     useShareIntentContext();
 
   useEffect(() => {
@@ -116,10 +116,10 @@ export default function HomeScreen() {
           <VStack style={{ alignItems: "center" }} space="sm">
             <Image
               size="2xl"
-              source={require("../assets/images/icon.png")}
+              source={require("../assets/images/rounded-icon.png")}
               alt="image"
             />
-            <Button size="xl" onPress={() => pickDocuments()}>
+            <Button className="mt-6" size="xl" onPress={() => pickDocuments()}>
               <ButtonText>Choisir un fichier</ButtonText>
             </Button>
           </VStack>
