@@ -18,7 +18,7 @@ const Menu = () => {
         </Button>
       </ButtonGroup>
       <ButtonGroup>
-        <Button variant="link" onPress={() => router.push("/")}>
+        <Button variant="link" onPress={() => router.push("/", {})}>
           <ButtonIcon
             className="h-8 w-8"
             color={path === "/" ? "pink" : "black"}

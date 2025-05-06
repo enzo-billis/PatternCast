@@ -11,6 +11,7 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
 import { useShareIntentContext } from "expo-share-intent";
 import { ChevronRightCircle } from "lucide-react-native";
 import { useEffect, useState } from "react";
@@ -28,16 +29,28 @@ export default function HomeScreen() {
     useShareIntentContext();
 
   useEffect(() => {
-    if (
-      hasShareIntent &&
-      shareIntent?.files &&
-      shareIntent?.files[0]?.mimeType === "application/pdf"
-    ) {
-      setSelectedDocuments({
-        uri: shareIntent?.files[0].path,
-        name: shareIntent?.files[0].fileName,
-      });
-    }
+    const handleShareIntent = async () => {
+      if (
+        hasShareIntent &&
+        shareIntent?.files &&
+        shareIntent?.files[0]?.mimeType === "application/pdf"
+      ) {
+        const tempFile = shareIntent?.files[0];
+        const newPath = `${FileSystem.documentDirectory}pattern-${tempFile.fileName}`;
+
+        await FileSystem.copyAsync({
+          from: tempFile.path,
+          to: newPath,
+        });
+
+        setSelectedDocuments({
+          uri: newPath,
+          name: shareIntent?.files[0].fileName,
+        });
+        resetShareIntent();
+      }
+    };
+    handleShareIntent();
   }, [hasShareIntent]);
 
   useEffect(() => {
@@ -78,9 +91,16 @@ export default function HomeScreen() {
         multiple: false, // Allows the user to select any file
         type: "application/pdf",
       });
-
       if (!result.canceled) {
-        setSelectedDocuments(result?.assets[0]);
+        const tempFile = result.assets[0];
+        const newPath = `${FileSystem.documentDirectory}pattern-${tempFile.name}`;
+
+        await FileSystem.copyAsync({
+          from: tempFile.uri,
+          to: newPath,
+        });
+
+        setSelectedDocuments({ ...tempFile, uri: newPath });
       } else {
         console.log("Document selection cancelled.");
       }

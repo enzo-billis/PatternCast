@@ -8,6 +8,7 @@ export function redirectSystemPath({
   initial: string;
 }) {
   try {
+    console.log(path);
     if (path.includes(`dataUrl=${getShareExtensionKey()}`)) {
       // redirect to the ShareIntent Screen to handle data with the hook
       console.debug(

@@ -51,18 +51,23 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
 
   useEffect(() => {
     const getPDF = async () => {
-      const response = await fetch(document?.uri);
-      const blob = await response.blob();
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = async () => {
-        if (reader.result) {
-          const arrayBuffer = reader.result as string;
-          const pdfDoc = await PDFDocument.load(arrayBuffer);
-          const pdfBytes = await pdfDoc.saveAsBase64();
-          setPDFBase64(pdfBytes);
-        }
-      };
+      try {
+        console.log("Loading PDF", document?.uri);
+        const response = await fetch(document?.uri);
+        const blob = await response.blob();
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = async () => {
+          if (reader.result) {
+            const arrayBuffer = reader.result as string;
+            const pdfDoc = await PDFDocument.load(arrayBuffer);
+            const pdfBytes = await pdfDoc.saveAsBase64();
+            setPDFBase64(pdfBytes);
+          }
+        };
+      } catch (e) {
+        console.error("Error loading PDF", e);
+      }
     };
     getPDF();
   }, [document]);
