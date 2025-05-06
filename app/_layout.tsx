@@ -39,11 +39,6 @@ export default function RootLayout() {
     <ShareIntentProvider
       options={{
         resetOnBackground: true,
-        onResetShareIntent: () =>
-          // used when app going in background and when the reset button is pressed
-          router.replace({
-            pathname: "/",
-          }),
       }}
     >
       <GluestackUIProvider mode="light">
