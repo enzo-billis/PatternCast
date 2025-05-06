@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as DocumentPicker from "expo-document-picker";
 import * as ScreenOrientation from "expo-screen-orientation";
 import {
@@ -19,6 +20,8 @@ import { Icon, ThreeDotsIcon } from "./ui/icon";
 import { Input, InputField } from "./ui/input";
 import { Menu, MenuItem, MenuItemLabel } from "./ui/menu";
 import { Text } from "./ui/text";
+
+const CACHE_SCALE_KEY = "DEFAULT_SCALE";
 
 type PropTypes = {
   document: DocumentPicker.DocumentPickerAsset;
@@ -48,6 +51,15 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
     uri: `data:application/pdf;base64,${pdfBase64}`,
     cache: true,
   };
+
+  useEffect(() => {
+    const retrieveSavedScale = async () => {
+      const savedScale = await AsyncStorage.getItem(CACHE_SCALE_KEY);
+      if (!savedScale || isNaN(parseInt(savedScale))) return;
+      setScale(parseInt(savedScale));
+    };
+    retrieveSavedScale();
+  }, []);
 
   useEffect(() => {
     const getPDF = async () => {
@@ -93,6 +105,8 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
         (scale2 - scale1)) /
         (parseFloat(size2.replace(",", ".")) -
           parseFloat(size1.replace(",", ".")));
+
+    await AsyncStorage.setItem(CACHE_SCALE_KEY, `${calculcatedScale}`);
     setScale(calculcatedScale);
     setScaleMeasure(calculcatedScale);
   };
