@@ -3,6 +3,7 @@ import {
   Button,
   ButtonGroup,
   ButtonIcon,
+  ButtonSpinner,
   ButtonText,
 } from "@/components/ui/button";
 import { Center } from "@/components/ui/center";
@@ -12,6 +13,7 @@ import { VStack } from "@/components/ui/vstack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useShareIntentContext } from "expo-share-intent";
 import { ChevronRightCircle } from "lucide-react-native";
 import { useEffect, useState } from "react";
@@ -20,6 +22,12 @@ const CACHE_KEY = "PREVIOUS_DOCUMENTS";
 const MAX_CACHE_SIZE = 5;
 
 export default function HomeScreen() {
+  const { fileURI: pathRequestedFileURI, fileName: pathRequestedFileName } =
+    useLocalSearchParams<{ fileURI: string; fileName: string }>();
+  const router = useRouter();
+
+  const [loadingDocument, setLoadingDocument] = useState(false);
+
   const [selectedDocuments, setSelectedDocuments] =
     useState<DocumentPicker.DocumentPickerAsset>();
   const [previousDocuments, setPreviousDocuments] =
@@ -52,6 +60,29 @@ export default function HomeScreen() {
     };
     handleShareIntent();
   }, [hasShareIntent]);
+
+  useEffect(() => {
+    const handleRequestFile = async () => {
+      try {
+        if (pathRequestedFileName && pathRequestedFileURI) {
+          setLoadingDocument(true);
+          const newPath = `${FileSystem.documentDirectory}pattern-${pathRequestedFileName}`;
+          await FileSystem.downloadAsync(pathRequestedFileURI, newPath);
+
+          setSelectedDocuments({
+            uri: pathRequestedFileURI,
+            name: pathRequestedFileName,
+          });
+          router.setParams(undefined);
+        }
+      } catch (e) {
+        console.log("Fail to handle request file: ", e);
+      } finally {
+        setLoadingDocument(false);
+      }
+    };
+    handleRequestFile();
+  }, [pathRequestedFileURI, pathRequestedFileName]);
 
   useEffect(() => {
     const refreshCache = async () => {
@@ -109,6 +140,30 @@ export default function HomeScreen() {
     }
   };
 
+  const handleFailOpenDocument = async (name: string) => {
+    const actualCache = JSON.parse(
+      (await AsyncStorage.getItem(CACHE_KEY)) || "[]"
+    ) as DocumentPicker.DocumentPickerAsset[];
+
+    const existingCacheIndex = actualCache.findIndex(
+      (doc) => doc.name === name
+    );
+
+    if (existingCacheIndex !== -1) {
+      actualCache.splice(existingCacheIndex, 1);
+    }
+
+    if (actualCache.length >= MAX_CACHE_SIZE) {
+      actualCache.pop();
+    }
+
+    await AsyncStorage.setItem(
+      CACHE_KEY,
+      JSON.stringify([selectedDocuments, ...actualCache])
+    );
+    setSelectedDocuments(undefined);
+  };
+
   return (
     <Center style={{ height: "100%" }}>
       {!selectedDocuments && (
@@ -120,7 +175,8 @@ export default function HomeScreen() {
               alt="image"
             />
             <Button className="mt-6" size="xl" onPress={() => pickDocuments()}>
-              <ButtonText>Choisir un fichier</ButtonText>
+              {!loadingDocument && <ButtonText>Choisir un fichier</ButtonText>}
+              {!!loadingDocument && <ButtonSpinner />}
             </Button>
           </VStack>
           {previousDocuments?.length && (
@@ -132,7 +188,10 @@ export default function HomeScreen() {
                     <Button
                       onPress={() => setSelectedDocuments(e)}
                       variant="outline"
-                      style={{ width: "100%", justifyContent: "space-between" }}
+                      style={{
+                        width: "100%",
+                        justifyContent: "space-between",
+                      }}
                     >
                       <ButtonText>{e.name}</ButtonText>
                       <ButtonIcon as={ChevronRightCircle} />
@@ -147,7 +206,13 @@ export default function HomeScreen() {
       {!!selectedDocuments && (
         <PDFViewer
           document={selectedDocuments}
-          onLeave={() => setSelectedDocuments(undefined)}
+          onLeave={(widthError) => {
+            if (widthError) {
+              handleFailOpenDocument(selectedDocuments?.name);
+            } else {
+              setSelectedDocuments(undefined);
+            }
+          }}
         />
       )}
     </Center>

@@ -14,7 +14,8 @@
       "icon": "./assets/images/icon.png",
       "supportsTablet": true,
       "bundleIdentifier": "com.enzobillis.patternCast",
-      "appleTeamId": "N4PB64R6SZ"
+      "appleTeamId": "N4PB64R6SZ",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "versionCode": "2",
@@ -22,7 +23,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.enzobillis.patternCast"
+      "package": "com.enzobillis.patternCast",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -59,6 +61,17 @@
             "NSExtensionActivationSupportsFileWithMaxCount": 1
           },
           "androidIntentFilters": ["application/pdf", "image/*"]
+        }
+      ],
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      "@react-native-firebase/crashlytics",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
         }
       ]
     ],

@@ -55,7 +55,12 @@ export default function RootLayout() {
                   name="settings"
                   options={{ headerShown: false }}
                 />
-                <Stack.Screen name="account" options={{ headerShown: false }} />
+                <Stack.Screen name="register" />
+                <Stack.Screen name="login" />
+                <Stack.Screen
+                  name="files/index"
+                  options={{ headerShown: false }}
+                />
                 <Stack.Screen name="+not-found" />
               </Stack>
               <StatusBar style="auto" />

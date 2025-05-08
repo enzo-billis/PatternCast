@@ -166,7 +166,7 @@ const Layers = ({ base64, onChangePDF }: PropTypes) => {
       dDict = PDFDict.withContext(context);
       ocProperties.set(PDFName.of("D"), dDict);
     }
-    console.log("pdfBytes");
+
     // ✅ Met à jour /ON avec les refs visibles
     const onArray = PDFArray.withContext(context);
     visibleRefs.forEach((ref) => onArray.push(ref));

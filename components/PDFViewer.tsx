@@ -16,16 +16,19 @@ import Layers from "./Layers";
 import { Box } from "./ui/box";
 import { Button, ButtonIcon, ButtonText } from "./ui/button";
 import { HStack } from "./ui/hstack";
-import { Icon, ThreeDotsIcon } from "./ui/icon";
+import { HelpCircleIcon, Icon, ThreeDotsIcon } from "./ui/icon";
 import { Input, InputField } from "./ui/input";
 import { Menu, MenuItem, MenuItemLabel } from "./ui/menu";
+import { Spinner } from "./ui/spinner";
 import { Text } from "./ui/text";
+import { Toast, ToastDescription, ToastTitle, useToast } from "./ui/toast";
+import { VStack } from "./ui/vstack";
 
 export const CACHE_SCALE_KEY = "DEFAULT_SCALE";
 
 type PropTypes = {
   document: DocumentPicker.DocumentPickerAsset;
-  onLeave: () => void;
+  onLeave: (withError?: boolean) => void;
 };
 
 const PDFViewer = ({ document, onLeave }: PropTypes) => {
@@ -48,16 +51,42 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
   const [scale2, setScale2] = useState(0);
   const [size2, setSize2] = useState("");
 
+  const toast = useToast();
+
   const source = {
     uri: `data:application/pdf;base64,${pdfBase64}`,
     cache: true,
   };
 
+  const toastError = () =>
+    toast.show({
+      placement: "bottom",
+      render: () => {
+        return (
+          <Toast
+            action="error"
+            className="p-4 gap-6 border-error-500 w-full shadow-hard-5 max-w-[443px] flex-row justify-between"
+          >
+            <HStack space="md">
+              <Icon as={HelpCircleIcon} className="stroke-error-500 mt-0.5" />
+              <VStack space="xs">
+                <ToastTitle className="font-semibold ">Erreur</ToastTitle>
+                <ToastDescription size="sm">
+                  Impossible de lire le fichier
+                </ToastDescription>
+              </VStack>
+            </HStack>
+          </Toast>
+        );
+      },
+    });
+
   useEffect(() => {
     const retrieveSavedScale = async () => {
       const savedScale = await AsyncStorage.getItem(CACHE_SCALE_KEY);
-      if (!savedScale || isNaN(parseInt(savedScale))) return;
-      setScale(parseInt(savedScale));
+
+      if (!savedScale || isNaN(parseFloat(savedScale))) return;
+      setScale(parseFloat(savedScale));
     };
     retrieveSavedScale();
   }, []);
@@ -71,13 +100,24 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
         reader.readAsDataURL(blob);
         reader.onloadend = async () => {
           if (reader.result) {
-            const arrayBuffer = reader.result as string;
-            const pdfDoc = await PDFDocument.load(arrayBuffer);
-            const pdfBytes = await pdfDoc.saveAsBase64();
-            setPDFBase64(pdfBytes);
+            try {
+              const arrayBuffer = reader.result as string;
+              const pdfDoc = await PDFDocument.load(arrayBuffer);
+              const pdfBytes = await pdfDoc.saveAsBase64();
+              setPDFBase64(pdfBytes);
+            } catch (e) {
+              toastError();
+              console.log("Error while encoding file:", e);
+            }
           }
         };
+        reader.onerror = (error) => {
+          toastError();
+          console.log("Error while encoding file:", error);
+        };
       } catch (e) {
+        toastError();
+        onLeave();
         console.error("Error loading PDF", e);
       }
     };
@@ -110,203 +150,222 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
     setScale(calculcatedScale);
     setScaleMeasure(calculcatedScale);
   };
-
+  console.log("has b64", !!pdfBase64);
   return (
-    <Box style={{ height: "100%", width: "100%" }}>
-      <View
-        style={{
-          ...styles.container,
-        }}
-      >
-        {(showToolbar || scaleMeasureMode) && (
-          <HStack style={styles.toolbar} space="md">
-            {!scaleMeasureMode && (
-              <>
-                <Button onPress={() => setScale(scale + 0.5)}>
-                  <Icon
-                    as={ZoomIn}
-                    className="text-typography-500 m-2 w-4 h-4"
-                  />
-                </Button>
-                <Button onPress={() => setScale(scale > 1.5 ? scale - 0.5 : 1)}>
-                  <Icon
-                    as={ZoomOut}
-                    className="text-typography-500 m-2 w-4 h-4"
-                  />
-                </Button>
-
-                <Layers
-                  base64={pdfBase64}
-                  onChangePDF={(e) => setPDFBase64(e)}
-                />
-
-                <Menu
-                  placement="top"
-                  offset={5}
-                  disabledKeys={["Settings"]}
-                  trigger={({ ...triggerProps }) => {
-                    return (
-                      <Button {...triggerProps}>
-                        <ButtonIcon
-                          as={ThreeDotsIcon}
-                          className="text-typography-500 m-2 w-4 h-4"
-                        />
-                      </Button>
-                    );
-                  }}
-                >
-                  <MenuItem
-                    onPress={() => setScale(scaleMeasure || 1)}
-                    key="ReinitialiserZoom"
-                    textValue="Réinitialiser le zoom"
-                  >
-                    <Icon as={RotateCcw} size="sm" className="mr-2" />
-                    <MenuItemLabel size="sm">Réinit. Zoom</MenuItemLabel>
-                  </MenuItem>
-                  <MenuItem
-                    onPress={() => setScaleMeasureMode(true)}
-                    key="ScaleAuto"
-                    textValue="Mise à l'échelle"
-                  >
-                    <Icon as={RulerDimensionLine} size="sm" className="mr-2" />
-                    <MenuItemLabel size="sm">Mise à l'echelle</MenuItemLabel>
-                  </MenuItem>
-                  <MenuItem
-                    onPress={() => onLeave()}
-                    key="Exit"
-                    textValue="Exit"
-                  >
-                    <Icon as={LogOut} size="sm" className="mr-2" />
-                    <MenuItemLabel size="sm">Quitter</MenuItemLabel>
-                  </MenuItem>
-                </Menu>
-              </>
-            )}
-            {!!scaleMeasureMode && (
-              <HStack style={{ width: "100%" }} space="md">
-                {scaleMeasureModeStep === 0 && (
-                  <>
-                    <Input
-                      style={{ flex: 5 }}
-                      isInvalid={scaleMeasureModeError}
-                    >
-                      <InputField
-                        keyboardType="numeric"
-                        onChangeText={(e) => setOriginalSize(e)}
-                        placeholder="Original measure (cm)"
-                      />
-                    </Input>
-                    <Button
-                      style={{ flex: 1 }}
-                      onPress={() => {
-                        if (originalSize && !isNaN(parseFloat(originalSize))) {
-                          setScaleMeasureModeError(false);
-                          setScaleMeasureModeStep(1);
-                          setScale(2);
-                        } else {
-                          setScaleMeasureModeError(true);
-                        }
-                      }}
-                    >
-                      <ButtonText>Save</ButtonText>
-                    </Button>
-                  </>
-                )}
-                {scaleMeasureModeStep === 1 && (
-                  <>
-                    <Input
-                      style={{ flex: 5 }}
-                      isInvalid={scaleMeasureModeError}
-                    >
-                      <InputField
-                        keyboardType="numeric"
-                        onChangeText={(e) => setSize1(e)}
-                        placeholder="Measure Scale 1 (cm)"
-                      />
-                    </Input>
-                    <Button
-                      style={{ flex: 1 }}
-                      onPress={() => {
-                        if (size1 && !isNaN(parseFloat(size1))) {
-                          setScaleMeasureModeError(false);
-                          setScale1(scale);
-                          setScaleMeasureModeStep(2);
-                          setScale(3);
-                        } else {
-                          setScaleMeasureModeError(true);
-                        }
-                      }}
-                    >
-                      <ButtonText>Save</ButtonText>
-                    </Button>
-                  </>
-                )}
-                {scaleMeasureModeStep === 2 && (
-                  <>
-                    <Input
-                      style={{ flex: 5 }}
-                      isInvalid={scaleMeasureModeError}
-                    >
-                      <InputField
-                        keyboardType="numeric"
-                        onChangeText={(e) => setSize2(e)}
-                        placeholder="Measure Scale 2 (cm)"
-                      />
-                    </Input>
-                    <Button
-                      style={{ flex: 1 }}
-                      onPress={() => {
-                        if (size2 && !isNaN(parseFloat(size2))) {
-                          setScale2(scale);
-                          setScaleMeasureModeStep(3);
-                        } else {
-                          setScaleMeasureModeError(true);
-                        }
-                      }}
-                    >
-                      <ButtonText>Save</ButtonText>
-                    </Button>
-                  </>
-                )}
-                {scaleMeasureModeStep === 3 && (
-                  <>
-                    <Text style={{ flex: 5 }}>
-                      Taille: {originalSize} cm Scale 1: {scale1} pour {size1}{" "}
-                      cm Scale 1: {scale2} pour {size2} cm
-                    </Text>
-                    <Button
-                      style={{ flex: 1 }}
-                      onPress={() => {
-                        setScaleMeasureModeStep(0);
-                        setScaleMeasureMode(false);
-                        autoZoom();
-                      }}
-                    >
-                      <ButtonText>Calcul</ButtonText>
-                    </Button>
-                  </>
-                )}
-              </HStack>
-            )}
-          </HStack>
-        )}
-
-        <Pdf
-          source={source}
-          onPageSingleTap={() => {
-            setScaleMeasureMode(false);
-            setShowToolbar(!showToolbar);
-          }}
-          scale={scale}
-          maxScale={30}
-          minScale={-10}
+    <Box
+      style={{
+        height: "100%",
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {!pdfBase64 && <Spinner size="large" />}
+      {!!pdfBase64 && (
+        <View
           style={{
-            ...styles.pdf,
-            width,
-            height,
+            ...styles.container,
           }}
-        />
-      </View>
+        >
+          {(showToolbar || scaleMeasureMode) && (
+            <HStack style={styles.toolbar} space="md">
+              {!scaleMeasureMode && (
+                <>
+                  <Button onPress={() => setScale(scale + 0.5)}>
+                    <Icon
+                      as={ZoomIn}
+                      className="text-typography-500 m-2 w-4 h-4"
+                    />
+                  </Button>
+                  <Button
+                    onPress={() => setScale(scale > 1.5 ? scale - 0.5 : 1)}
+                  >
+                    <Icon
+                      as={ZoomOut}
+                      className="text-typography-500 m-2 w-4 h-4"
+                    />
+                  </Button>
+
+                  <Layers
+                    base64={pdfBase64}
+                    onChangePDF={(e) => setPDFBase64(e)}
+                  />
+
+                  <Menu
+                    placement="top"
+                    offset={5}
+                    disabledKeys={["Settings"]}
+                    trigger={({ ...triggerProps }) => {
+                      return (
+                        <Button {...triggerProps}>
+                          <ButtonIcon
+                            as={ThreeDotsIcon}
+                            className="text-typography-500 m-2 w-4 h-4"
+                          />
+                        </Button>
+                      );
+                    }}
+                  >
+                    <MenuItem
+                      onPress={() => setScale(scaleMeasure || 1)}
+                      key="ReinitialiserZoom"
+                      textValue="Réinitialiser le zoom"
+                    >
+                      <Icon as={RotateCcw} size="sm" className="mr-2" />
+                      <MenuItemLabel size="sm">Réinit. Zoom</MenuItemLabel>
+                    </MenuItem>
+                    <MenuItem
+                      onPress={() => setScaleMeasureMode(true)}
+                      key="ScaleAuto"
+                      textValue="Mise à l'échelle"
+                    >
+                      <Icon
+                        as={RulerDimensionLine}
+                        size="sm"
+                        className="mr-2"
+                      />
+                      <MenuItemLabel size="sm">Mise à l'echelle</MenuItemLabel>
+                    </MenuItem>
+                    <MenuItem
+                      onPress={() => onLeave()}
+                      key="Exit"
+                      textValue="Exit"
+                    >
+                      <Icon as={LogOut} size="sm" className="mr-2" />
+                      <MenuItemLabel size="sm">Quitter</MenuItemLabel>
+                    </MenuItem>
+                  </Menu>
+                </>
+              )}
+              {!!scaleMeasureMode && (
+                <HStack style={{ width: "100%" }} space="md">
+                  {scaleMeasureModeStep === 0 && (
+                    <>
+                      <Input
+                        style={{ flex: 5 }}
+                        isInvalid={scaleMeasureModeError}
+                      >
+                        <InputField
+                          keyboardType="numeric"
+                          onChangeText={(e) => setOriginalSize(e)}
+                          placeholder="Original measure (cm)"
+                        />
+                      </Input>
+                      <Button
+                        style={{ flex: 1 }}
+                        onPress={() => {
+                          if (
+                            originalSize &&
+                            !isNaN(parseFloat(originalSize))
+                          ) {
+                            setScaleMeasureModeError(false);
+                            setScaleMeasureModeStep(1);
+                            setScale(2);
+                          } else {
+                            setScaleMeasureModeError(true);
+                          }
+                        }}
+                      >
+                        <ButtonText>Save</ButtonText>
+                      </Button>
+                    </>
+                  )}
+                  {scaleMeasureModeStep === 1 && (
+                    <>
+                      <Input
+                        style={{ flex: 5 }}
+                        isInvalid={scaleMeasureModeError}
+                      >
+                        <InputField
+                          keyboardType="numeric"
+                          onChangeText={(e) => setSize1(e)}
+                          placeholder="Measure Scale 1 (cm)"
+                        />
+                      </Input>
+                      <Button
+                        style={{ flex: 1 }}
+                        onPress={() => {
+                          if (size1 && !isNaN(parseFloat(size1))) {
+                            setScaleMeasureModeError(false);
+                            setScale1(scale);
+                            setScaleMeasureModeStep(2);
+                            setScale(3);
+                          } else {
+                            setScaleMeasureModeError(true);
+                          }
+                        }}
+                      >
+                        <ButtonText>Save</ButtonText>
+                      </Button>
+                    </>
+                  )}
+                  {scaleMeasureModeStep === 2 && (
+                    <>
+                      <Input
+                        style={{ flex: 5 }}
+                        isInvalid={scaleMeasureModeError}
+                      >
+                        <InputField
+                          keyboardType="numeric"
+                          onChangeText={(e) => setSize2(e)}
+                          placeholder="Measure Scale 2 (cm)"
+                        />
+                      </Input>
+                      <Button
+                        style={{ flex: 1 }}
+                        onPress={() => {
+                          if (size2 && !isNaN(parseFloat(size2))) {
+                            setScale2(scale);
+                            setScaleMeasureModeStep(3);
+                          } else {
+                            setScaleMeasureModeError(true);
+                          }
+                        }}
+                      >
+                        <ButtonText>Save</ButtonText>
+                      </Button>
+                    </>
+                  )}
+                  {scaleMeasureModeStep === 3 && (
+                    <>
+                      <Text style={{ flex: 5 }}>
+                        Taille: {originalSize} cm Scale 1: {scale1} pour {size1}{" "}
+                        cm Scale 1: {scale2} pour {size2} cm
+                      </Text>
+                      <Button
+                        style={{ flex: 1 }}
+                        onPress={() => {
+                          setScaleMeasureModeStep(0);
+                          setScaleMeasureMode(false);
+                          autoZoom();
+                        }}
+                      >
+                        <ButtonText>Calcul</ButtonText>
+                      </Button>
+                    </>
+                  )}
+                </HStack>
+              )}
+            </HStack>
+          )}
+
+          <Pdf
+            source={source}
+            onPageSingleTap={() => {
+              setScaleMeasureMode(false);
+              setShowToolbar(!showToolbar);
+            }}
+            scale={scale}
+            maxScale={30}
+            minScale={-10}
+            style={{
+              ...styles.pdf,
+              width,
+              height,
+            }}
+          />
+        </View>
+      )}
     </Box>
   );
 };
