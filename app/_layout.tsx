@@ -1,4 +1,5 @@
 import Menu from "@/components/Menu";
+import { Box } from "@/components/ui/box";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -14,6 +15,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -45,14 +47,21 @@ export default function RootLayout() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="settings" options={{ headerShown: false }} />
-            <Stack.Screen name="account" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-          <StatusBar style="auto" />
-          <Menu />
+          <Box className="w-full h-full ">
+            <SafeAreaView style={{ flex: 1 }}>
+              <Stack>
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="settings"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen name="account" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+              <StatusBar style="auto" />
+              <Menu />
+            </SafeAreaView>
+          </Box>
         </ThemeProvider>
       </GluestackUIProvider>
     </ShareIntentProvider>
