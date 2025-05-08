@@ -21,7 +21,7 @@ import { Input, InputField } from "./ui/input";
 import { Menu, MenuItem, MenuItemLabel } from "./ui/menu";
 import { Text } from "./ui/text";
 
-const CACHE_SCALE_KEY = "DEFAULT_SCALE";
+export const CACHE_SCALE_KEY = "DEFAULT_SCALE";
 
 type PropTypes = {
   document: DocumentPicker.DocumentPickerAsset;
@@ -38,6 +38,7 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
   const [showToolbar, setShowToolbar] = useState(false);
 
   const [scaleMeasureMode, setScaleMeasureMode] = useState(false);
+  const [scaleMeasureModeError, setScaleMeasureModeError] = useState(false);
   const [scaleMeasureModeStep, setScaleMeasureModeStep] = useState(0);
   const [scaleMeasure, setScaleMeasure] = useState(0);
 
@@ -64,7 +65,6 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
   useEffect(() => {
     const getPDF = async () => {
       try {
-        console.log("Loading PDF", document?.uri);
         const response = await fetch(document?.uri);
         const blob = await response.blob();
         const reader = new FileReader();
@@ -116,12 +116,6 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
       <View
         style={{
           ...styles.container,
-          marginTop: [
-            ScreenOrientation.Orientation.PORTRAIT_DOWN,
-            ScreenOrientation?.Orientation?.PORTRAIT_UP,
-          ]?.includes(orientation || ScreenOrientation?.Orientation?.UNKNOWN)
-            ? 52
-            : 0,
         }}
       >
         {(showToolbar || scaleMeasureMode) && (
@@ -192,7 +186,10 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
               <HStack style={{ width: "100%" }} space="md">
                 {scaleMeasureModeStep === 0 && (
                   <>
-                    <Input style={{ flex: 5 }}>
+                    <Input
+                      style={{ flex: 5 }}
+                      isInvalid={scaleMeasureModeError}
+                    >
                       <InputField
                         keyboardType="numeric"
                         onChangeText={(e) => setOriginalSize(e)}
@@ -202,8 +199,13 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
                     <Button
                       style={{ flex: 1 }}
                       onPress={() => {
-                        setScaleMeasureModeStep(1);
-                        setScale(2);
+                        if (originalSize && !isNaN(parseFloat(originalSize))) {
+                          setScaleMeasureModeError(false);
+                          setScaleMeasureModeStep(1);
+                          setScale(2);
+                        } else {
+                          setScaleMeasureModeError(true);
+                        }
                       }}
                     >
                       <ButtonText>Save</ButtonText>
@@ -212,19 +214,27 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
                 )}
                 {scaleMeasureModeStep === 1 && (
                   <>
-                    <Input style={{ flex: 5 }}>
+                    <Input
+                      style={{ flex: 5 }}
+                      isInvalid={scaleMeasureModeError}
+                    >
                       <InputField
                         keyboardType="numeric"
                         onChangeText={(e) => setSize1(e)}
-                        placeholder="Measure Scale 1"
+                        placeholder="Measure Scale 1 (cm)"
                       />
                     </Input>
                     <Button
                       style={{ flex: 1 }}
                       onPress={() => {
-                        setScale1(scale);
-                        setScaleMeasureModeStep(2);
-                        setScale(3);
+                        if (size1 && !isNaN(parseFloat(size1))) {
+                          setScaleMeasureModeError(false);
+                          setScale1(scale);
+                          setScaleMeasureModeStep(2);
+                          setScale(3);
+                        } else {
+                          setScaleMeasureModeError(true);
+                        }
                       }}
                     >
                       <ButtonText>Save</ButtonText>
@@ -233,18 +243,25 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
                 )}
                 {scaleMeasureModeStep === 2 && (
                   <>
-                    <Input style={{ flex: 5 }}>
+                    <Input
+                      style={{ flex: 5 }}
+                      isInvalid={scaleMeasureModeError}
+                    >
                       <InputField
                         keyboardType="numeric"
                         onChangeText={(e) => setSize2(e)}
-                        placeholder="Measure Scale 2"
+                        placeholder="Measure Scale 2 (cm)"
                       />
                     </Input>
                     <Button
                       style={{ flex: 1 }}
                       onPress={() => {
-                        setScale2(scale);
-                        setScaleMeasureModeStep(3);
+                        if (size2 && !isNaN(parseFloat(size2))) {
+                          setScale2(scale);
+                          setScaleMeasureModeStep(3);
+                        } else {
+                          setScaleMeasureModeError(true);
+                        }
                       }}
                     >
                       <ButtonText>Save</ButtonText>
