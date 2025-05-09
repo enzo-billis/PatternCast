@@ -8,6 +8,8 @@
     "android": "DARK_MODE=media expo run:android",
     "ios": "DARK_MODE=media expo run:ios",
     "build:android:local": "eas build --platform android --local --output=./builds/android.aab",
+    "build:ios:local": "eas build --platform ios --local --output=./builds/ios.aab",
+    "build:all:local": "npm run build:ios:local & npm run build:android:local",
     "web": "DARK_MODE=media expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
