@@ -37,7 +37,7 @@ type PropTypes = {
 };
 type Layer = {
   name: string;
-  ref: PDFObject;
+  ref: PDFObject[];
   visible: boolean;
 };
 
@@ -100,15 +100,37 @@ const Layers = ({ base64, onChangePDF }: PropTypes) => {
         return { ref, name, visible: isVisible };
       });
 
-      setLayers(
-        ocgInfo.sort((a, b) => {
-          const nameA = a.name.toLowerCase();
-          const nameB = b.name.toLowerCase();
-          if (nameA < nameB) return 1;
-          if (nameA > nameB) return -1;
-          return 0;
-        })
-      );
+      const sorted = ocgInfo.sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        if (nameA < nameB) return 1;
+        if (nameA > nameB) return -1;
+        return 0;
+      });
+
+      let uniqLayers: Array<Layer> = [];
+      sorted.forEach((layer) => {
+        const actualLayerIndex = uniqLayers?.findIndex(
+          (uniqLayer) => uniqLayer.name === layer.name
+        );
+        if (actualLayerIndex === -1) {
+          uniqLayers.push({
+            name: layer.name,
+            ref: [layer.ref],
+            visible: layer.visible,
+          });
+        } else {
+          const actualLayer = uniqLayers[actualLayerIndex];
+          uniqLayers[actualLayerIndex] = {
+            name: actualLayer.name,
+            visible: layer.visible,
+            ref: [...actualLayer.ref, layer.ref],
+          };
+        }
+      });
+
+      setLayers(uniqLayers);
+
       if (isSaving) {
         setIsSaving(false);
         setShowDrawer(false);
@@ -157,8 +179,14 @@ const Layers = ({ base64, onChangePDF }: PropTypes) => {
 
     if (!ocProperties) return;
 
-    const visibleRefs = layers.filter((l) => l.visible).map((l) => l.ref);
-    const hiddenRefs = layers.filter((l) => !l.visible).map((l) => l.ref);
+    const visibleRefs: Array<PDFObject> = [];
+    const hiddenRefs: Array<PDFObject> = [];
+    layers
+      .filter((l) => l.visible)
+      .forEach((l) => l.ref.forEach((aref) => visibleRefs.push(aref)));
+    layers
+      .filter((l) => !l.visible)
+      .forEach((l) => l.ref.forEach((aref) => hiddenRefs.push(aref)));
 
     // 🧱 Créer /D s'il n'existe pas
     let dDict = ocProperties.get(PDFName.of("D")) as PDFDict;
@@ -205,37 +233,42 @@ const Layers = ({ base64, onChangePDF }: PropTypes) => {
           <DrawerHeader>
             <Heading size="3xl">Calques</Heading>
           </DrawerHeader>
-          <DrawerBody>
-            <VStack space="lg">
+          <DrawerBody style={{ maxHeight: "80%" }}>
+            <VStack space="lg" style={{ height: "100%" }}>
               {layers?.length ? (
                 <>
                   <Text>Sélectionnez les calques à afficher</Text>
-                  {layers?.map((e) => (
-                    <Checkbox
-                      key={e.name}
-                      value=""
-                      isChecked={e.visible}
-                      size="lg"
-                      isInvalid={false}
-                      isDisabled={isSaving}
-                      onChange={() =>
-                        setLayers(
-                          layers.map((layer) =>
-                            layer.name === e.name
-                              ? { ...layer, visible: !layer.visible }
-                              : layer
-                          )
-                        )
-                      }
-                    >
-                      <CheckboxIndicator>
-                        <CheckboxIcon as={CheckIcon} />
-                      </CheckboxIndicator>
-                      <CheckboxLabel>
-                        <Text>{e.name}</Text>
-                      </CheckboxLabel>
-                    </Checkbox>
-                  ))}
+                  <VStack
+                    space="lg"
+                    style={{ maxHeight: "100%", overflowY: "auto" }}
+                  >
+                    {layers?.map((e) => (
+                      <Checkbox
+                        key={e.name}
+                        value=""
+                        isChecked={e.visible}
+                        size="lg"
+                        isInvalid={false}
+                        isDisabled={isSaving}
+                        onChange={() => {
+                          setLayers(
+                            layers.map((layer) =>
+                              layer.name === e.name
+                                ? { ...layer, visible: !layer.visible }
+                                : layer
+                            )
+                          );
+                        }}
+                      >
+                        <CheckboxIndicator>
+                          <CheckboxIcon as={CheckIcon} />
+                        </CheckboxIndicator>
+                        <CheckboxLabel>
+                          <Text>{e.name}</Text>
+                        </CheckboxLabel>
+                      </Checkbox>
+                    ))}
+                  </VStack>
                   <Button
                     onPress={() => {
                       setLayers(

@@ -117,7 +117,7 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
         };
       } catch (e) {
         toastError();
-        onLeave();
+        onLeave(true);
         console.error("Error loading PDF", e);
       }
     };
@@ -150,7 +150,7 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
     setScale(calculcatedScale);
     setScaleMeasure(calculcatedScale);
   };
-  console.log("has b64", !!pdfBase64);
+
   return (
     <Box
       style={{

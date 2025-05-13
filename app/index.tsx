@@ -156,11 +156,7 @@ export default function HomeScreen() {
     if (actualCache.length >= MAX_CACHE_SIZE) {
       actualCache.pop();
     }
-
-    await AsyncStorage.setItem(
-      CACHE_KEY,
-      JSON.stringify([selectedDocuments, ...actualCache])
-    );
+    await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(actualCache));
     setSelectedDocuments(undefined);
   };
 
