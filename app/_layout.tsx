@@ -43,7 +43,7 @@ export default function RootLayout() {
       <FirebaseProviders>
         <GluestackUIProvider mode="light">
           <ThemeProvider value={DefaultTheme}>
-            <Box className="w-full h-full ">
+            <Box className="w-full h-full bg-white">
               <SafeAreaView style={{ flex: 1 }}>
                 <Stack>
                   <Stack.Screen name="index" options={{ headerShown: false }} />
