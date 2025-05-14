@@ -175,7 +175,7 @@ export default function HomeScreen() {
               {!!loadingDocument && <ButtonSpinner />}
             </Button>
           </VStack>
-          {previousDocuments?.length && (
+          {!!previousDocuments?.length && (
             <VStack space="sm">
               <Text>Derniers fichiers consultés</Text>
               <VStack space="md">
