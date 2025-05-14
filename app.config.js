@@ -94,7 +94,7 @@ export default {
         origin: false,
       },
       eas: {
-        projectId: " d47d39a3-2517-4bb3-b55c-3c748ad9601e",
+        projectId: "d47d39a3-2517-4bb3-b55c-3c748ad9601e",
       },
     },
     owner: "enzobillis",
