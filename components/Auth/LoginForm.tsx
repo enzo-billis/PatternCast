@@ -1,3 +1,4 @@
+import { getAuth, signInWithEmailAndPassword } from "@/adapters/auth.adapter";
 import { Box } from "@/components/ui/box";
 import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import {
@@ -14,10 +15,7 @@ import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 import { VStack } from "@/components/ui/vstack";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-} from "@react-native-firebase/auth";
+
 import { useRouter } from "expo-router";
 import { AlertCircleIcon } from "lucide-react-native";
 import { useState } from "react";

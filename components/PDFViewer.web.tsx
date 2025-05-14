@@ -1,4 +1,3 @@
-import { CACHE_SCALE_KEY } from "@/utils/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as DocumentPicker from "expo-document-picker";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -12,7 +11,6 @@ import {
 import { PDFDocument } from "pdf-lib";
 import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import Pdf from "react-native-pdf";
 import Layers from "./Layers";
 import { Box } from "./ui/box";
 import { Button, ButtonIcon, ButtonText } from "./ui/button";
@@ -24,6 +22,8 @@ import { Spinner } from "./ui/spinner";
 import { Text } from "./ui/text";
 import { Toast, ToastDescription, ToastTitle, useToast } from "./ui/toast";
 import { VStack } from "./ui/vstack";
+
+export const CACHE_SCALE_KEY = "DEFAULT_SCALE";
 
 type PropTypes = {
   document: DocumentPicker.DocumentPickerAsset;
@@ -348,7 +348,7 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
             </HStack>
           )}
 
-          <Pdf
+          {/* <Pdf
             source={source}
             onPageSingleTap={() => {
               setScaleMeasureMode(false);
@@ -362,7 +362,7 @@ const PDFViewer = ({ document, onLeave }: PropTypes) => {
               width,
               height,
             }}
-          />
+          /> */}
         </View>
       )}
     </Box>

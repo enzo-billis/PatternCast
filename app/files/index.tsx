@@ -1,13 +1,10 @@
+import { getAuth, onAuthStateChanged } from "@/adapters/auth.adapter";
 import FilesList from "@/components/Files/FileList";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
-import {
-  FirebaseAuthTypes,
-  getAuth,
-  onAuthStateChanged,
-} from "@react-native-firebase/auth";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 
@@ -21,7 +18,9 @@ export default function FilesScreen() {
       setUser(user);
     }
 
-    const subscriber = onAuthStateChanged(auth, (e) => handleAuthChange(e));
+    const subscriber = onAuthStateChanged(auth, (e: any) =>
+      handleAuthChange(e)
+    );
     return subscriber; // unsubscribe on unmount
   }, []);
 

@@ -1,0 +1,1 @@
+export const CACHE_SCALE_KEY = "DEFAULT_SCALE";

@@ -1,14 +1,18 @@
 import {
   getStorage,
-  isNativeListResult,
+  isWebListResult,
   isWebRef,
   list,
   ref,
 } from "@/adapters/storage.adapter";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { FirebaseStorageTypes } from "@react-native-firebase/storage";
 import * as DocumentPicker from "expo-document-picker";
 import { useRouter } from "expo-router";
+import {
+  getDownloadURL,
+  StorageReference,
+  uploadBytes,
+} from "firebase/storage";
 import { ChevronRightCircle, CloudUpload } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import colors from "tailwindcss/colors";
@@ -30,7 +34,7 @@ type PropTypes = {
 };
 
 const FilesList = ({ user }: PropTypes) => {
-  const [files, setFiles] = useState<FirebaseStorageTypes.Reference[]>([]);
+  const [files, setFiles] = useState<StorageReference[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpening, setIsOpening] = useState<string>();
@@ -47,14 +51,15 @@ const FilesList = ({ user }: PropTypes) => {
         pageToken: newPageToken,
         maxResults: 10,
       });
-      if (!!isNativeListResult(result)) {
-        setNextPageToken(result?.nextPageToken || undefined);
 
-        if (newPageToken) {
-          setFiles([...files, ...result?.items]);
-        } else {
-          setFiles(result?.items);
-        }
+      if (!isWebListResult(result)) return;
+
+      setNextPageToken(result?.nextPageToken || undefined);
+
+      if (newPageToken) {
+        setFiles([...files, ...result?.items]);
+      } else {
+        setFiles(result?.items);
       }
     } catch (e) {
       console.log(e);
@@ -80,8 +85,8 @@ const FilesList = ({ user }: PropTypes) => {
           `/user_files/${user?.uid}/${tempFile.name}`
         );
         setIsUploading(true);
-        if (!isWebRef(reference)) {
-          await reference.putFile(tempFile.uri);
+        if (isWebRef(reference) && tempFile?.file) {
+          await uploadBytes(reference, tempFile?.file);
           getFiles();
         }
       } else {
@@ -94,18 +99,17 @@ const FilesList = ({ user }: PropTypes) => {
     }
   };
 
-  const handleOpenFile = async (file: FirebaseStorageTypes.Reference) => {
+  const handleOpenFile = async (file: StorageReference) => {
     try {
       setIsOpening(file.name);
-
       const reference = ref(storage, `/user_files/${user?.uid}/${file.name}`);
-      if (!isWebRef(reference)) {
-        const url = await reference.getDownloadURL();
-        router.push({
-          pathname: "/",
-          params: { fileURI: encodeURIComponent(url), fileName: file.name },
-        });
-      }
+      if (!isWebRef(reference)) return;
+
+      const url = await getDownloadURL(reference);
+      router.push({
+        pathname: "/",
+        params: { fileURI: encodeURIComponent(url), fileName: file.name },
+      });
     } catch (e) {
       console.log(e);
     } finally {

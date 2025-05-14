@@ -1,16 +1,13 @@
-import { CACHE_SCALE_KEY } from "@/components/PDFViewer";
+import { getAuth, onAuthStateChanged } from "@/adapters/auth.adapter";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
+import { CACHE_SCALE_KEY } from "@/utils/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  FirebaseAuthTypes,
-  getAuth,
-  onAuthStateChanged,
-} from "@react-native-firebase/auth";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 
@@ -45,7 +42,9 @@ export default function SettingScreen() {
       setUser(user);
     }
 
-    const subscriber = onAuthStateChanged(auth, (e) => handleAuthChange(e));
+    const subscriber = onAuthStateChanged(auth, (e: any) =>
+      handleAuthChange(e)
+    );
     return subscriber; // unsubscribe on unmount
   }, []);
 

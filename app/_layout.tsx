@@ -1,13 +1,10 @@
+import FirebaseProviders from "@/components/FirebaseProvider/FirebaseProviders";
 import Menu from "@/components/Menu";
 import { Box } from "@/components/ui/box";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack, useRouter } from "expo-router";
 import { ShareIntentProvider } from "expo-share-intent";
@@ -43,32 +40,32 @@ export default function RootLayout() {
         resetOnBackground: true,
       }}
     >
-      <GluestackUIProvider mode="light">
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <Box className="w-full h-full ">
-            <SafeAreaView style={{ flex: 1 }}>
-              <Stack>
-                <Stack.Screen name="index" options={{ headerShown: false }} />
-                <Stack.Screen
-                  name="settings"
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen name="register" />
-                <Stack.Screen name="login" />
-                <Stack.Screen
-                  name="files/index"
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen name="+not-found" />
-              </Stack>
-              <StatusBar style="auto" />
-              <Menu />
-            </SafeAreaView>
-          </Box>
-        </ThemeProvider>
-      </GluestackUIProvider>
+      <FirebaseProviders>
+        <GluestackUIProvider mode="light">
+          <ThemeProvider value={DefaultTheme}>
+            <Box className="w-full h-full ">
+              <SafeAreaView style={{ flex: 1 }}>
+                <Stack>
+                  <Stack.Screen name="index" options={{ headerShown: false }} />
+                  <Stack.Screen
+                    name="settings"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen name="register" />
+                  <Stack.Screen name="login" />
+                  <Stack.Screen
+                    name="files/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen name="+not-found" />
+                </Stack>
+                <StatusBar style="auto" />
+                <Menu />
+              </SafeAreaView>
+            </Box>
+          </ThemeProvider>
+        </GluestackUIProvider>
+      </FirebaseProviders>
     </ShareIntentProvider>
   );
 }
