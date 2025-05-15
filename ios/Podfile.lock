@@ -228,7 +228,7 @@ PODS:
     - ExpoModulesCore
   - ExpoHaptics (14.0.1):
     - ExpoModulesCore
-  - ExpoHead (4.0.20):
+  - ExpoHead (4.0.21):
     - ExpoModulesCore
   - ExpoKeepAwake (14.0.3):
     - ExpoModulesCore
@@ -2096,7 +2096,7 @@ PODS:
     - React-perflogger
     - React-utils (= 0.76.9)
   - RecaptchaInterop (101.0.0)
-  - RNCAsyncStorage (2.1.2):
+  - RNCAsyncStorage (1.23.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2309,7 +2309,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNSVG (15.12.0):
+  - RNSVG (15.8.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2329,9 +2329,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.12.0)
+    - RNSVG/common (= 15.8.0)
     - Yoga
-  - RNSVG/common (15.12.0):
+  - RNSVG/common (15.8.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2717,7 +2717,7 @@ SPEC CHECKSUMS:
   ExpoFileSystem: 42d363d3b96f9afab980dcef60d5657a4443c655
   ExpoFont: f354e926f8feae5e831ec8087f36652b44a0b188
   ExpoHaptics: 8d199b2f33245ea85289ff6c954c7ee7c00a5b5d
-  ExpoHead: cee2d16ef197aaadb0ac481cf221a663636eb074
+  ExpoHead: df924203fbf8e0913fc38b0f6aec71f9a9115482
   ExpoKeepAwake: b0171a73665bfcefcfcc311742a72a956e6aa680
   ExpoLinking: 8d12bee174ba0cdf31239706578e29e74a417402
   ExpoModulesCore: c3e810e874b33139221bea656743f106a2826f47
@@ -2813,7 +2813,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 049be6309e06c1027544819670913680f2029b8e
   ReactCommon: b2eb96a61b826ff327a773a74357b302cf6da678
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
-  RNCAsyncStorage: b3520cd01fc00fd0e7c633812c23708c95ef1b2b
+  RNCAsyncStorage: 9ff617df4a485f2efba57bdf4face05a41767390
   RNCClipboard: 0040f9cc32910632f2a0270f5a25221a95e195b3
   RNDeviceInfo: d863506092aef7e7af3a1c350c913d867d795047
   RNFBApp: cb46a0facdbd687c5379783d6dc35c5ae71e1c6d
@@ -2823,10 +2823,10 @@ SPEC CHECKSUMS:
   RNGestureHandler: de2b7ccdbf18766609fb9490c7f11c18805705a3
   RNReanimated: 758e433dea58eb219208bd209ef91a6f8ee096fb
   RNScreens: 2fe3d999c2dee6ef1d5e863fec0fb6f7de60c45a
-  RNSVG: e1a716d635c65297c86e874eeb6adf3704a2e50a
+  RNSVG: d332ea2a8540218eadc5c8f31c2b58dfba6b14b5
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 1259c7a8cbaccf7b4c3ddf8ee36ca11be9dee407
 
-PODFILE CHECKSUM: 64b67a4f5c160bcbfe4028a8c29a3631acc3608f
+PODFILE CHECKSUM: 62058c2c3b19373a610482f31d4fa69165809bcb
 
 COCOAPODS: 1.16.2

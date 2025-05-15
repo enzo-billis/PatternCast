@@ -81,5 +81,6 @@ yarn-error.*
 # Expo
 .expo
 dist/
+builds/
 web-build/
 .env
