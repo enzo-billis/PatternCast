@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from "expo-router";
-import { FilesIcon, Home, Settings } from "lucide-react-native";
+import { CloudIcon, Home, Settings } from "lucide-react-native";
 import { Button, ButtonGroup, ButtonIcon } from "./ui/button";
 import { HStack } from "./ui/hstack";
 
@@ -13,7 +13,7 @@ const Menu = () => {
           <ButtonIcon
             className="h-8 w-8"
             color={path === "/files" ? "pink" : "black"}
-            as={FilesIcon}
+            as={CloudIcon}
           />
         </Button>
       </ButtonGroup>

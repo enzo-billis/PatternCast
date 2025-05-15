@@ -9,7 +9,11 @@ import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { FirebaseStorageTypes } from "@react-native-firebase/storage";
 import * as DocumentPicker from "expo-document-picker";
 import { useRouter } from "expo-router";
-import { ChevronRightCircle, CloudUpload } from "lucide-react-native";
+import {
+  ChevronRightCircle,
+  CloudUpload,
+  RefreshCwIcon,
+} from "lucide-react-native";
 import { useEffect, useState } from "react";
 import colors from "tailwindcss/colors";
 import { Box } from "../ui/box";
@@ -115,16 +119,30 @@ const FilesList = ({ user }: PropTypes) => {
 
   return (
     <VStack className="gap-y-5">
-      <Button className="mt-6" size="xl" onPress={() => uploadFile()}>
-        {isUploading && <ButtonSpinner color={colors.gray[400]} />}
+      <HStack className="mt-6 w-full justify-center items-center" space="lg">
+        <Button className="flex-1" size="xl" onPress={() => uploadFile()}>
+          {isUploading && <ButtonSpinner color={colors.gray[400]} />}
 
-        {!isUploading ? (
-          <>
-            <ButtonIcon as={CloudUpload} />
-            <ButtonText>Envoyer un fichier</ButtonText>
-          </>
-        ) : null}
-      </Button>
+          {!isUploading ? (
+            <>
+              <ButtonIcon as={CloudUpload} />
+              <ButtonText>Envoyer un fichier</ButtonText>
+            </>
+          ) : null}
+        </Button>
+        <Button
+          disabled={isLoading}
+          size="xl"
+          variant="link"
+          onPress={() => getFiles()}
+        >
+          <ButtonIcon
+            className="text-typography-500 m-2 w-4 h-4"
+            as={RefreshCwIcon}
+          />
+        </Button>
+      </HStack>
+
       {isLoading && <Spinner />}
       {!isLoading && !files?.length ? (
         <Text>Aucun fichier enregistré</Text>
