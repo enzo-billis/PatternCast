@@ -5,7 +5,7 @@ export default {
     jsEngine: "hermes",
     name: "PatternCast",
     slug: "PatternProjector",
-    version: "1.0.3",
+    version: "1.0.4",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     scheme: "patterncast",

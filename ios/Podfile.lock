@@ -2140,19 +2140,19 @@ PODS:
     - Yoga
   - RNDeviceInfo (14.0.4):
     - React-Core
-  - RNFBApp (22.1.0):
+  - RNFBApp (22.2.0):
     - Firebase/CoreOnly (= 11.12.0)
     - React-Core
-  - RNFBAuth (22.1.0):
+  - RNFBAuth (22.2.0):
     - Firebase/Auth (= 11.12.0)
     - React-Core
     - RNFBApp
-  - RNFBCrashlytics (22.1.0):
+  - RNFBCrashlytics (22.2.0):
     - Firebase/Crashlytics (= 11.12.0)
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
-  - RNFBStorage (22.1.0):
+  - RNFBStorage (22.2.0):
     - Firebase/Storage (= 11.12.0)
     - React-Core
     - RNFBApp
@@ -2816,10 +2816,10 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 9ff617df4a485f2efba57bdf4face05a41767390
   RNCClipboard: 0040f9cc32910632f2a0270f5a25221a95e195b3
   RNDeviceInfo: d863506092aef7e7af3a1c350c913d867d795047
-  RNFBApp: cb46a0facdbd687c5379783d6dc35c5ae71e1c6d
-  RNFBAuth: a2219d06d829cfa03cba8465edb16f5068e3d7f6
-  RNFBCrashlytics: 439bef6f0acb6a72b16281b7e7057e1690327d31
-  RNFBStorage: b2f2deb7928e5732ff58b4895d75badc0aa4590a
+  RNFBApp: 2b2bb0f17eb6732e2e90d9c57bfde443cd7fc681
+  RNFBAuth: b5e52895796572e99a9024ae0d601ef8b21588ac
+  RNFBCrashlytics: 266758adee95705af20f106c767e19588a5de665
+  RNFBStorage: 3786fb22c7a70ba3acf419a644a37495032b6e31
   RNGestureHandler: de2b7ccdbf18766609fb9490c7f11c18805705a3
   RNReanimated: 758e433dea58eb219208bd209ef91a6f8ee096fb
   RNScreens: 2fe3d999c2dee6ef1d5e863fec0fb6f7de60c45a
