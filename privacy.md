@@ -69,6 +69,6 @@ Nous pouvons mettre à jour cette politique de confidentialité. En cas de chang
 ## 8. Nous contacter
 
 Pour toute question concernant cette politique de confidentialité, vous pouvez nous contacter à l’adresse suivante :  
-**[votre.email@domaine.com]**
+**[enzo.billis@gmail.com]**
 
 ---
